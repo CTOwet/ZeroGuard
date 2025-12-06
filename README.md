@@ -261,7 +261,7 @@ Perfect for:
 
 <div align="center">
 
-**Made with 💚 for cybersecurity education**
+**Made with 💚 for cybersecurity education.**
 
 [⬆ Back to Top](#️-zeroguard-scanner)
 
