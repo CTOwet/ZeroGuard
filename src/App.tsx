@@ -10,6 +10,7 @@ import CodeInput from './components/scanner/CodeInput';
 import ScanButton from './components/scanner/ScanButton';
 import MatrixRain from './components/scanner/MatrixRain';
 import ResultsCard from './components/scanner/ResultsCard';
+import AIStats from './components/scanner/AIStats';
 import type { ScanResult, HistoryItem } from './types';
 import { scanCode } from './utils/scanEngine';
 
@@ -66,6 +67,8 @@ function App() {
         <Hero />
 
         <div className="max-w-5xl mx-auto space-y-8">
+          <AIStats />
+
           <CodeInput value={code} onChange={setCode} disabled={isScanning} />
 
           <ScanButton

@@ -18,7 +18,7 @@ export default function Header() {
 
                 <nav className="flex items-center gap-6">
                     <a
-                        href="https://github.com"
+                        href="https://github.com/CtoXplt/ZeroGuard"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="text-white/70 hover:text-neon-cyan transition-colors"

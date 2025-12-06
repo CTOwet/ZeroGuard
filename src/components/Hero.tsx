@@ -22,7 +22,7 @@ export default function Hero() {
                 transition={{ delay: 0.3, duration: 0.8 }}
                 className="font-rajdhani text-3xl md:text-4xl font-bold text-white neon-glow-cyan mb-4"
             >
-                Advanced Zero-Day Scanner
+                AI-Powered Zero-Day Scanner
             </motion.p>
 
             <motion.p
@@ -31,23 +31,23 @@ export default function Hero() {
                 transition={{ delay: 0.5, duration: 0.8 }}
                 className="text-white/70 text-lg max-w-2xl mx-auto mb-6"
             >
-                Detect potential zero-day vulnerabilities in your code using advanced pattern matching and heuristic analysis. Secure your application before deployment.
+                Detect potential zero-day vulnerabilities using advanced <span className="text-neon-cyan font-semibold">PyTorch Neural Network</span> combined with pattern matching. AI-powered analysis trained on real CVE data for maximum accuracy.
             </motion.p>
 
             <motion.div
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: 0.7, duration: 0.5 }}
-                className="flex items-center justify-center gap-4 text-neon-cyan"
+                className="flex flex-wrap items-center justify-center gap-4 text-neon-cyan"
             >
                 <Zap className="w-5 h-5 animate-pulse" />
-                <span className="font-rajdhani font-semibold">Real-time Scanning</span>
+                <span className="font-rajdhani font-semibold">AI Deep Learning</span>
                 <span className="text-white/30">•</span>
                 <Zap className="w-5 h-5 animate-pulse animation-delay-200" />
-                <span className="font-rajdhani font-semibold">Pattern Detection</span>
+                <span className="font-rajdhani font-semibold">Real CVE Dataset</span>
                 <span className="text-white/30">•</span>
                 <Zap className="w-5 h-5 animate-pulse animation-delay-400" />
-                <span className="font-rajdhani font-semibold">Instant Reports</span>
+                <span className="font-rajdhani font-semibold">Instant Analysis</span>
             </motion.div>
         </div>
     );

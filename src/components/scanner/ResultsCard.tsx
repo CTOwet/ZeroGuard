@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { Share2, Download, AlertCircle, CheckCircle } from 'lucide-react';
+import { Share2, Download, AlertCircle, CheckCircle, Zap } from 'lucide-react';
 import GlassCard from '../ui/GlassCard';
 import StatusBadge from '../ui/StatusBadge';
 import ProgressCircle from '../ui/ProgressCircle';
@@ -42,9 +42,20 @@ export default function ResultsCard({ result }: ResultsCardProps) {
             <GlassCard neonBorder className="space-y-6">
                 {/* Header */}
                 <div className="flex items-center justify-between flex-wrap gap-4">
-                    <h2 className="font-orbitron font-bold text-2xl text-gradient">
-                        Scan Results
-                    </h2>
+                    <div className="flex items-center gap-3">
+                        <h2 className="font-orbitron font-bold text-2xl text-gradient">
+                            Scan Results
+                        </h2>
+                        <motion.div
+                            initial={{ opacity: 0, scale: 0 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            transition={{ delay: 0.2 }}
+                            className="px-3 py-1 bg-gradient-to-r from-neon-cyan/20 to-neon-purple/20 border border-neon-cyan/50 rounded-full flex items-center gap-2"
+                        >
+                            <Zap className="w-4 h-4 text-neon-cyan" />
+                            <span className="text-xs font-rajdhani font-bold text-neon-cyan">AI POWERED</span>
+                        </motion.div>
+                    </div>
                     <div className="flex gap-2">
                         <motion.button
                             whileHover={{ scale: 1.05 }}

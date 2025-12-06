@@ -27,3 +27,23 @@ dist-ssr
 
 .env
 .venv
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Backend specific
+backend/data/.venv/
+backend/data/cves/
+backend/data/datasets/
+backend/data/hasil_pengujian/
+*.pth
+*.pkl

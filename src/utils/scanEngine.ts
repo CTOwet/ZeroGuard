@@ -198,29 +198,81 @@ function analyzeVulnerabilities(code: string) {
 }
 
 export async function scanCode(code: string): Promise<ScanResult> {
-    // Simulate scanning delay
-    await new Promise((resolve) => setTimeout(resolve, 2000 + Math.random() * 1000));
+    // Simulate scanning delay for UI effect
+    await new Promise((resolve) => setTimeout(resolve, 1500));
 
     const language = detectLanguage(code);
     const detectedVulns = analyzeVulnerabilities(code);
 
-    // Determine overall status
-    let status: VulnerabilityStatus = 'SAFE';
-    let confidence = 95;
+    // Call Backend API
+    let aiPrediction = null;
+    try {
+        const response = await fetch('http://localhost:8000/predict', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ code }),
+        });
 
+        if (response.ok) {
+            aiPrediction = await response.json();
+        } else {
+            console.warn('Backend API returned error:', response.status);
+        }
+    } catch (error) {
+        console.warn('Backend API unreachable, falling back to local analysis:', error);
+    }
+
+    // Determine overall status and confidence
+    let status: VulnerabilityStatus = 'SAFE';
+    let confidence = 0;
+
+    // Base confidence from local analysis
     if (detectedVulns.length > 0) {
         const criticalCount = detectedVulns.filter((v) => v.severity === 'critical').length;
         const highCount = detectedVulns.filter((v) => v.severity === 'high').length;
 
         if (criticalCount > 0) {
             status = 'HIGH RISK';
-            confidence = 85 + Math.random() * 10;
-        } else if (highCount > 0 || detectedVulns.length >= 2) {
-            status = 'POTENTIAL ZERO-DAY';
-            confidence = 70 + Math.random() * 15;
+            confidence = 85;
+        } else if (highCount > 0) {
+            status = 'HIGH RISK';
+            confidence = 75;
         } else {
             status = 'POTENTIAL ZERO-DAY';
-            confidence = 60 + Math.random() * 20;
+            confidence = 60;
+        }
+    } else {
+        confidence = 90; // High confidence it's safe
+    }
+
+    // Adjust based on AI Prediction
+    if (aiPrediction) {
+        if (aiPrediction.is_vulnerable) {
+            status = 'POTENTIAL ZERO-DAY';
+            // AI confidence is usually 0.0-1.0, convert to percentage
+            const aiConf = aiPrediction.confidence * 100;
+            confidence = Math.max(confidence, aiConf);
+
+            // Add AI finding if no specific vulns found yet
+            if (detectedVulns.length === 0) {
+                detectedVulns.push({
+                    type: 'AI Detected Zero-Day Pattern',
+                    severity: 'critical',
+                    description: 'The AI model detected patterns consistent with known zero-day vulnerabilities.',
+                    cweId: 'CWE-Unknown'
+                });
+            }
+        } else {
+            // AI says safe
+            if (detectedVulns.length === 0) {
+                status = 'SAFE';
+                confidence = Math.max(confidence, aiPrediction.confidence * 100);
+            }
+            // If local found something but AI didn't, we trust local for specific patterns
+            // but maybe lower confidence slightly? 
+            // Actually, let's keep local findings as truth for known patterns.
         }
     }
 
@@ -245,6 +297,9 @@ export async function scanCode(code: string): Promise<ScanResult> {
     }
     if (detectedVulns.some((v) => v.severity === 'critical')) {
         recommendations.push('Immediate security review required - Critical vulnerabilities detected');
+    }
+    if (aiPrediction && aiPrediction.is_vulnerable) {
+        recommendations.push('AI Model suggests high probability of zero-day vulnerability. Manual audit recommended.');
     }
     if (recommendations.length === 0) {
         recommendations.push('Code appears secure, but consider additional security testing');
